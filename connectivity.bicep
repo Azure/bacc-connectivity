@@ -144,10 +144,6 @@ var enabledLogsCategories = map(enabledLogs, item => item.categoryGroup)
 var enabledMetrics = filter(diagnosticConfig.metrics, item => item.enabled)
 var enabledMetricsCategories = map(enabledMetrics, item => item.category)
 
-// Retention Days are only read from the logs settings
-var retentionDaysRaw = map(enabledLogs, item => item.retentionPolicy.enabled ? item.retentionPolicy.days : 0)
-var retentionDays = max(union(retentionDaysRaw,[10]))
-
 
 //------------------------------------------------------------------------------
 // Resources
@@ -177,7 +173,6 @@ module logAnalyticsWorkspace './modules/Microsoft.OperationalInsights/workspaces
     serviceTier: logAnalyticsServiceTier
     diagnosticMetricsToEnable: enabledMetricsCategories
     diagnosticLogCategoriesToEnable: enabledLogsCategories
-    diagnosticLogsRetentionInDays: retentionDays
     enableDefaultTelemetry: false 
   }
   dependsOn: [
@@ -223,7 +218,6 @@ module hubNSGbastion './modules/Microsoft.Network/networkSecurityGroups/deploy.b
     tags: allTags
     securityRules: contains(hubConfig, 'networkSecurityGroups') ? hubConfig.networkSecurityGroups.bastion : {}
     enableDefaultTelemetry: false
-    diagnosticLogsRetentionInDays: retentionDays
     diagnosticLogCategoriesToEnable: enabledLogsCategories
     diagnosticWorkspaceId: logAnalyticsWorkspace.outputs.resourceId
   }
@@ -244,7 +238,6 @@ module hubNSGjumpbox './modules/Microsoft.Network/networkSecurityGroups/deploy.b
     tags: allTags
     securityRules: contains(hubConfig, 'networkSecurityGroups') ? hubConfig.networkSecurityGroups.jumpbox : {}
     enableDefaultTelemetry: false
-    diagnosticLogsRetentionInDays: retentionDays
     diagnosticLogCategoriesToEnable: enabledLogsCategories
     diagnosticWorkspaceId: logAnalyticsWorkspace.outputs.resourceId
   }
@@ -299,7 +292,6 @@ module hubVnet './modules/Microsoft.Network/virtualNetworks/deploy.bicep' = {
     location: location
     tags: allTags
     enableDefaultTelemetry: false
-    diagnosticLogsRetentionInDays: retentionDays
     diagnosticLogCategoriesToEnable: enabledLogsCategories
     diagnosticMetricsToEnable: enabledMetricsCategories
     diagnosticWorkspaceId: logAnalyticsWorkspace.outputs.resourceId
@@ -338,7 +330,6 @@ module azFirewall './modules/Microsoft.Network/azureFirewalls/deploy.bicep' = if
     networkRuleCollections: azFwConfig.networkRuleCollections.value
     zones:  hubConfig.publicIPSettings.zones
     enableDefaultTelemetry: false
-    diagnosticLogsRetentionInDays: retentionDays
     diagnosticLogCategoriesToEnable: enabledLogsCategories
     diagnosticMetricsToEnable: enabledMetricsCategories
     diagnosticWorkspaceId: logAnalyticsWorkspace.outputs.resourceId
@@ -370,7 +361,6 @@ module azBastion './modules/Microsoft.Network/bastionHosts/deploy.bicep' = if (d
     vNetId: hubVnet.outputs.resourceId
     publicIPAddressObject: pipAzBastionAddressObject
     enableDefaultTelemetry: false
-    diagnosticLogsRetentionInDays: retentionDays
     diagnosticLogCategoriesToEnable: enabledLogsCategories
     diagnosticWorkspaceId: logAnalyticsWorkspace.outputs.resourceId
   }
@@ -400,7 +390,6 @@ module vpnGateway './modules/Microsoft.Network/virtualNetworkGateways/deploy.bic
     activeActive:  vpngConfig.activeActive
     gatewayPipName: 'pip-${rsPrefix}-vpngw'
     enableDefaultTelemetry: false
-    diagnosticLogsRetentionInDays: retentionDays
     diagnosticMetricsToEnable: enabledMetricsCategories
     diagnosticWorkspaceId: logAnalyticsWorkspace.outputs.resourceId
     vpnClientAddressPoolPrefix: vpngConfig.vpnClientAddressPoolPrefix
@@ -570,7 +559,6 @@ module linuxJumpBox './modules/Microsoft.Compute/virtualMachines/deploy.bicep' =
     adminUsername: vmJumpBoxConfig.linux.adminUsername
     adminPassword: adminPassword
     enableDefaultTelemetry: false
-    diagnosticLogsRetentionInDays: retentionDays
     diagnosticWorkspaceId: logAnalyticsWorkspace.outputs.resourceId
     userAssignedIdentities: jumpBoxUserAssignedIdentitiesObject 
     }
@@ -613,7 +601,6 @@ module windowsJumpBox './modules/Microsoft.Compute/virtualMachines/deploy.bicep'
     adminUsername: vmJumpBoxConfig.windows.adminUsername
     adminPassword: adminPassword
     enableDefaultTelemetry: false
-    diagnosticLogsRetentionInDays: retentionDays
     diagnosticWorkspaceId: logAnalyticsWorkspace.outputs.resourceId
     securityType: contains(vmJumpBoxConfig.windows,'securityType') ? vmJumpBoxConfig.windows.securityType : ''
     vTpmEnabled: contains(vmJumpBoxConfig.windows, 'vTpmEnabled') ? vmJumpBoxConfig.windows.vTpmEnabled : false
