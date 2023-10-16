@@ -102,11 +102,6 @@ var enabledLogsCategories = map(enabledLogs, item => item.categoryGroup)
 var enabledMetrics = filter(diagnosticConfig.metrics, item => item.enabled)
 var enabledMetricsCategories = map(enabledMetrics, item => item.category)
 
-// Retention Days are only read from the logs settings
-var retentionDaysRaw = map(enabledLogs, item => item.retentionPolicy.enabled ? item.retentionPolicy.days : 0)
-var retentionDays = max(union(retentionDaysRaw,[10]))
-
-
 //------------------------------------------------------------------------------
 // Resources
 //------------------------------------------------------------------------------
@@ -130,7 +125,6 @@ module spokeDefaultNSG '../modules/Microsoft.Network/networkSecurityGroups/deplo
     securityRules: spokeConfig.networkSecurityGroups.defaultNSG
     tags: allTags
     enableDefaultTelemetry: false
-    diagnosticLogsRetentionInDays: retentionDays
     diagnosticLogCategoriesToEnable: enabledLogsCategories
     diagnosticWorkspaceId: logAnalyticsWorkspace.id
   }
@@ -182,7 +176,6 @@ module SpokeVnet '../modules/Microsoft.Network/virtualNetworks/deploy.bicep' = {
     virtualNetworkPeerings: hubSpokePeering
     tags: allTags
     enableDefaultTelemetry: false
-    diagnosticLogsRetentionInDays: retentionDays
     diagnosticLogCategoriesToEnable: enabledLogsCategories
     diagnosticMetricsToEnable: enabledMetricsCategories
     diagnosticWorkspaceId: logAnalyticsWorkspace.id
