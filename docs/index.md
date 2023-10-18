@@ -1,4 +1,4 @@
-# azbatch-starter-connectivity
+# bacc-connectivity
 
 > __Warning__
 > This repository is under active development. Expect everything to change until the first version is tagged/released.
@@ -13,10 +13,13 @@ However, as one moves from a POC to a production deployment, by incorporating be
 the complexity of the deployment invariably increases.
 
 This repository is a part of our accelerator solution to make it easier for customers to deploy **Azure Batch** workloads
-in a manner that follows best practices and security guidelines. When used in conjunction with the Azure Batch starter repository [azbatch-starter](https://github.com/utkarshayachit/azbatch-starter), it can be used to deploy
-a locked down Azure Batch environment, designed for industrial use cases such as those in Financial Services (FSI).
+in a manner that follows best practices and security guidelines. When used in conjunction with the [bacc repository](https://github.com/Azure/bacc),
+it can be used to deploy a locked down Azure Batch environment, designed for industrial use cases such as those in Financial Services (FSI).
 
-This repository is part one of two repositories aming to speed-up the depoloyment of (secured) Azure Batch, but can also be used to deploy a simplified connectitivty zone for secure sandbox deployments, pilots and similar projects. For a large scale, enterprise ready landing zone, we recommend to follow the guiding principles and recommendations found in the [Cloud Adoption Framework](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/landing-zone/#platform-vs-application-landing-zones).
+This repository is part one of two repositories aiming to speed-up the deployment of (secured) Azure Batch, but can also be
+used to deploy a simplified connectivity zone for secure sandbox deployments, pilots and similar projects. For a large scale,
+enterprise ready landing zone, we recommend to follow the guiding principles and recommendations found in the
+[Cloud Adoption Framework](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/landing-zone/#platform-vs-application-landing-zones).
 
 ## Getting Started / Tutorials
 
