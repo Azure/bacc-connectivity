@@ -1,3 +1,6 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
 param (
     [string] $BatchExplorerURL   = "https://github.com/Azure/BatchExplorer/releases/download/v2.16.1-stable.713/BatchExplorer.Setup.2.16.1-stable.713.exe",
     [string] $StorageExplorerURL = "https://github.com/microsoft/AzureStorageExplorer/releases/download/v1.28.1/Windows-StorageExplorer.exe",
